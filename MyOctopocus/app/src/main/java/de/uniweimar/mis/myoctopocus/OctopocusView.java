@@ -12,12 +12,20 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class OctopocusView extends View {
     String TAG = "OctopocusView";
 
     private Paint mPaintGesture = new Paint();
     // encapsulates compound geometric path
     private Path mFeedbackPath = new Path();
+
+    Map<String, Object> mObjects = new HashMap<>();
+    TemplateData mObjectData = new TemplateData();
+
+
 
     public OctopocusView(Context context) {
         super(context);
@@ -70,6 +78,7 @@ public class OctopocusView extends View {
                 Log.v(TAGf, "MotionEvent ACTION_DOWN");
                 Log.v(TAGf, "moveTo: " + touchX + ", " + touchY);
                 mFeedbackPath.moveTo(touchX,touchY);
+                showMenu();
                 invalidate();
                 break;
             case MotionEvent.ACTION_MOVE:
@@ -95,8 +104,14 @@ public class OctopocusView extends View {
         //return super.onTouchEvent(event);
     }
 
+    /*
+    showMenu shows the different path for the user
+     */
     public void showMenu(){
         String TAGf = TAG + "showMenu";
+
+        mObjects.put("Copy", new Object("Copy", mObjectData.copyPoints, "#ccccff", "#7f7fff", 3, 10));
+        mObjects.put("New Path: Copy", new Object("New Path: Copy", mObjectData.newCopyPath, "#7a7a7a", "#3b3b3b", 3, 10));
 
     }
 }
