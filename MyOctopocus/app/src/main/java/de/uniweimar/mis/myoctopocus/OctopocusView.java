@@ -42,9 +42,11 @@ public class OctopocusView extends View {
         mPaintGesture.setAntiAlias(true);
         mPaintGesture.setStyle(Paint.Style.STROKE);
         mPaintGesture.setStrokeWidth(10);
-
     }
 
+    /*
+    onDraw is drawing the feedback path
+     */
     @Override
     public void onDraw(Canvas canvas){
         super.onDraw(canvas);
@@ -54,7 +56,7 @@ public class OctopocusView extends View {
 
     /*
     onTouchEvent is drawing the feedback line, important was the return true to show that the event
-    was handled properly.
+    was handled properly. If user is touching the screen a line drawn.
      */
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -91,5 +93,10 @@ public class OctopocusView extends View {
         // return true is important to clarify that the event was handled successfully
         return true;
         //return super.onTouchEvent(event);
+    }
+
+    public void showMenu(){
+        String TAGf = TAG + "showMenu";
+
     }
 }
