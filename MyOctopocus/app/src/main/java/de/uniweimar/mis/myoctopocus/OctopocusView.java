@@ -33,12 +33,16 @@ public class OctopocusView extends View {
         super(context, attrs, defStyleAttr, defStyleRes);
         init();
     }
-
+    /*
+    Init sets the properties of the drawingLine
+     */
     public void init(){
         mPaintGesture.setColor(Color.RED);
         // To avoid pixels
         mPaintGesture.setAntiAlias(true);
         mPaintGesture.setStyle(Paint.Style.STROKE);
+        mPaintGesture.setStrokeWidth(10);
+
     }
 
     @Override
@@ -48,6 +52,10 @@ public class OctopocusView extends View {
         canvas.drawPath(mFeedbackPath, mPaintGesture);
     }
 
+    /*
+    onTouchEvent is drawing the feedback line, important was the return true to show that the event
+    was handled properly.
+     */
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         String TAGf = TAG + "onTouchEvent";
@@ -55,22 +63,33 @@ public class OctopocusView extends View {
         float touchX = event.getX();
         float touchY = event.getY();
 
-        // Log.v(TAGf, "X: " + touchX + " Y: " + touchY);
-
         switch(event.getAction()){
             case MotionEvent.ACTION_DOWN:
                 Log.v(TAGf, "MotionEvent ACTION_DOWN");
+                Log.v(TAGf, "moveTo: " + touchX + ", " + touchY);
                 mFeedbackPath.moveTo(touchX,touchY);
+                invalidate();
+                break;
             case MotionEvent.ACTION_MOVE:
-               Log.v(TAGf, "MotionEvent ACTION_MOVE");
-               mFeedbackPath.lineTo(touchX,touchY);
-            case MotionEvent.ACTION_UP:
                 Log.v(TAGf, "MotionEvent ACTION_MOVE");
+                mFeedbackPath.lineTo(touchX,touchY);
+                Log.v(TAGf, "lineTo: " + touchX + ", " + touchY);
+                invalidate();
+                break;
+            case MotionEvent.ACTION_UP:
+                Log.v(TAGf, "MotionEvent ACTION_UP");
+                //Log.v(TAGf, "moveTo: " + touchX + ", " + touchY);
+                //
             case MotionEvent.ACTION_CANCEL:
                 Log.v(TAGf, "MotionEvent ACTION_CANCEL");
+                Log.v(TAGf, "moveTo: " + touchX + ", " + touchY);
 
+                invalidate();
+                break;
         }
-        // invalidate();
-        return super.onTouchEvent(event);
+
+        // return true is important to clarify that the event was handled successfully
+        return true;
+        //return super.onTouchEvent(event);
     }
 }
