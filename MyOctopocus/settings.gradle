@@ -1,0 +1,2 @@
+rootProject.name='MyOctopocus'
+include ':app'
