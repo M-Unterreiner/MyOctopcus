@@ -90,6 +90,7 @@ public class OctopocusView extends View {
         float touchX = event.getX();
         float touchY = event.getY();
 
+        // TODO Hier könnnte der Grund der unendlichkeits-Schleife liegen
         switch(event.getAction()){
             case MotionEvent.ACTION_DOWN:
                 Log.v(TAGf, "MotionEvent ACTION_DOWN");
@@ -102,6 +103,7 @@ public class OctopocusView extends View {
                 showMenu();
                 invalidate();
                 break;
+
             case MotionEvent.ACTION_MOVE:
                 Log.v(TAGf, "MotionEvent ACTION_MOVE");
                 mFeedbackPath.lineTo(touchX,touchY);
@@ -131,7 +133,7 @@ public class OctopocusView extends View {
     }
 
     /*
-    showMenu shows the different path for the user
+    showMenu shows the different path for the user. The Menu should be sized by the screen.
      */
     public void showMenu(){
         String TAGf = TAG + "showMenu";
@@ -169,6 +171,7 @@ public class OctopocusView extends View {
 
         // Was macht diese For-Schleife?
         // Diese For-Schleife mal das Menü auf
+        // TODO Weiterhin ist eine infiniti loop vorhanden. Ich vermute das liegt daran, da der Event Listener kein ordentliches Ende anzeigt.
         for (int x = 0; x < points.length; x += 2) {
             float x_pos = points[x] * mOBJECTSCALE + (int) mInitPos.X - points[0] * mOBJECTSCALE; // objects points to local space
             float y_pos = points[x + 1] * mOBJECTSCALE + (int) mInitPos.Y - points[1] * mOBJECTSCALE; // objects points to local space
@@ -176,36 +179,38 @@ public class OctopocusView extends View {
             // float x_pos = points[x]; // objects points to local space
             // float y_pos = points[x + 1]; // objects points to local space
 
-            if (x < object.getStartPos()) {
-                mFeedbackPath.lineTo(x_pos, y_pos);
+           if (x < object.getStartPos()) {
+               mFeedbackPath.lineTo(x_pos, y_pos);
 
-            } else if (x == object.getStartPos()) {
-                mFeedbackPath.lineTo(x_pos, y_pos);
-                mPrefixPath.moveTo(x_pos, y_pos);
-                if (x >= points.length - 10) { // finger tip is near to the end of path
-                    object.setExecute(true);
-                    mSelectedObject = object;
-                } else {
-                    object.setExecute(false);
-                }
+           } else if (x == object.getStartPos()) {
+               mFeedbackPath.lineTo(x_pos, y_pos);
+               mPrefixPath.moveTo(x_pos, y_pos);
+               if (x >= points.length - 10) { // finger tip is near to the end of path
+                   object.setExecute(true) ;
+                   mSelectedObject = object;
+               } else {
+                   object.setExecute(false);
+               }
 
-            } else if (x < prefix_end_index) {
-                mPrefixPath.lineTo(x_pos, y_pos);
+           } else if (x < prefix_end_index) {
+               mPrefixPath.lineTo(x_pos, y_pos);
 
-            } else if (x == prefix_end_index) {
-                mPrefixPath.lineTo(x_pos, y_pos);
-                mFeedforwardPath.moveTo(x_pos, y_pos);
-                canvas.drawText(object.getName(), x_pos, y_pos,  object.getTextPaint());
+           } else if (x == prefix_end_index) {
+               mPrefixPath.lineTo(x_pos, y_pos);
+               mFeedforwardPath.moveTo(x_pos, y_pos);
+               canvas.drawText(object.getName(), x_pos, y_pos,  object.getTextPaint());
 
-            } else {
-                mFeedforwardPath.lineTo(x_pos, y_pos);
-            }
+           } else {
+               mFeedforwardPath.lineTo(x_pos, y_pos);
+           }
         }
 
         // mFeedbackPaint.setStrokeWidth(object.getThickness());
         // canvas.drawPath(mFeedbackPath, mFeedbackPaint);
-        mPaintGesture.setStrokeWidth(object.getThickness());
-        canvas.drawPath(mFeedbackPath, mPaintGesture);
+
+        // Auskommentiert dies verändert die Größe des Striches
+        // mPaintGesture.setStrokeWidth(object.getThickness());
+        // canvas.drawPath(mFeedbackPath, mPaintGesture);
 
         if (object.getThickness() != 0) {
             canvas.drawPath(mFeedforwardPath, object.getPathPaint());
