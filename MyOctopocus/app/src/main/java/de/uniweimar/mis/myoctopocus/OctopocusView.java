@@ -19,21 +19,31 @@ import java.util.Map;
 public class OctopocusView extends View {
     String TAG = "OctopocusView";
 
+    // ######## Feedback Line ########
     private Paint mPaintGesture = new Paint();
     // encapsulates compound geometric path
     private Path mFeedbackPath = new Path();
     private Path mFeedforwardPath = new Path(); // I'm at the moment not sure, when to use this
     private Path mPrefixPath = new Path();      //  ""
 
+    // ######## currentPos of the finger tip ########
     private Point mCurrentPos; // On which position is the finger at the momenent
     private Point mInitPos;    // Init position of the first finger tip
 
-    Map<String, Object> mObjects = new HashMap<>();
-    TemplateData mObjectData = new TemplateData();
-
+    // Was genau macht dieses Object?
     private Object mSelectedObject = null; // Not sure
-    int mOBJECTSCALE = 1;     // ObjectScale should be dependent on the screen size
-    int mMAXTHICKNESS = 10;   // ObjectScale should be dependent on the screen size
+
+    // int mOBJECTSCALE = 1;     // ObjectScale should be dependent on the screen size
+    // int mMAXTHICKNESS = 10;   // ObjectScale should be dependent on the screen size
+
+    // in mObjects are the Objects stored, which are drawn in the draw-methods
+    Map<String, Object> mObjects = new HashMap<>();
+    // TemplateData mObjectData = new TemplateData(); // commented out, these are at the moment in the Menu class
+
+    // ####### Menu ########
+    Menu mFeedbackMenu = new Menu();
+
+
 
     public OctopocusView(Context context) {
         super(context);
@@ -50,7 +60,7 @@ public class OctopocusView extends View {
         init();
     }
     /*
-    Init sets the properties of the drawingLine
+    Init sets the properties of the FeedbackLine = mPaintGesture and create the Menu
      */
     public void init(){
         mPaintGesture.setColor(Color.RED);
@@ -58,6 +68,8 @@ public class OctopocusView extends View {
         mPaintGesture.setAntiAlias(true);
         mPaintGesture.setStyle(Paint.Style.STROKE);
         mPaintGesture.setStrokeWidth(10);
+
+
     }
 
     /*
@@ -100,7 +112,10 @@ public class OctopocusView extends View {
 
                 // TODO set startPoint for the menu!
                 mFeedbackPath.moveTo(touchX,touchY);
-                showMenu();
+
+                https://stackoverflow.com/questions/4299728/how-can-i-combine-two-hashmap-objects-containing-the-same-types
+                mObjects.putAll(mFeedbackMenu.addMenu(mObjects));
+
                 invalidate();
                 break;
 
@@ -132,28 +147,10 @@ public class OctopocusView extends View {
         //return super.onTouchEvent(event);
     }
 
-    /*
-    showMenu shows the different path for the user. The Menu should be sized by the screen.
-     */
-    public void showMenu(){
-        String TAGf = TAG + "showMenu";
 
-        Log.v(TAGf, "showMenu opened");
-        mObjects.put("Copy", new Object("Copy", mObjectData.copyPoints, "#ccccff", "#7f7fff", mOBJECTSCALE, mMAXTHICKNESS));
-        mObjects.put("New Path: Copy", new Object("New Path: Copy", mObjectData.newCopyPath, "#7a7a7a", "#3b3b3b", mOBJECTSCALE, mMAXTHICKNESS));
-
-        mObjects.put("Paste", new Object("Paste", mObjectData.pastePoints, "#8ae32b", "#208a18", mOBJECTSCALE, mMAXTHICKNESS));
-        mObjects.put("New Path: Paste", new Object("New Path: Paste", mObjectData.newPastePath, "#7a7a7a", "#3b3b3b", mOBJECTSCALE, mMAXTHICKNESS));
-
-        mObjects.put("Select", new Object("Select", mObjectData.selectPoints, "#FE642E", "#B43104", mOBJECTSCALE, mMAXTHICKNESS));
-        mObjects.put("New Path: Select", new Object("New Path: Select", mObjectData.newSelectPath, "#7a7a7a", "#3b3b3b", mOBJECTSCALE, mMAXTHICKNESS));
-
-        mObjects.put("Cut", new Object("Cut", mObjectData.cutPoints,"#c19465", "#513211", mOBJECTSCALE, mMAXTHICKNESS));
-        mObjects.put("New Path: Cut", new Object("New Path: Cut", mObjectData.newCutPath, "#7a7a7a", "#3b3b3b", mOBJECTSCALE, mMAXTHICKNESS));
-    }
 
     /*
-
+i     drawObject does only draw the the Object
      */
     private void drawObject(Canvas canvas, Object object) {
         mFeedforwardPath = new Path(); // Ist ein Pfad, wo ich noch nicht weiß, was er macht
@@ -173,11 +170,11 @@ public class OctopocusView extends View {
         // Diese For-Schleife mal das Menü auf
         // TODO Weiterhin ist eine infiniti loop vorhanden. Ich vermute das liegt daran, da der Event Listener kein ordentliches Ende anzeigt.
         for (int x = 0; x < points.length; x += 2) {
-            float x_pos = points[x] * mOBJECTSCALE + (int) mInitPos.X - points[0] * mOBJECTSCALE; // objects points to local space
-            float y_pos = points[x + 1] * mOBJECTSCALE + (int) mInitPos.Y - points[1] * mOBJECTSCALE; // objects points to local space
+            // float x_pos = points[x] * mOBJECTSCALE + (int) mInitPos.X - points[0] * mOBJECTSCALE; // objects points to local space
+            // float y_pos = points[x + 1] * mOBJECTSCALE + (int) mInitPos.Y - points[1] * mOBJECTSCALE; // objects points to local space
 
-            // float x_pos = points[x]; // objects points to local space
-            // float y_pos = points[x + 1]; // objects points to local space
+            float x_pos = points[x]; // objects points to local space
+            float y_pos = points[x + 1]; // objects points to local space
 
            if (x < object.getStartPos()) {
                mFeedbackPath.lineTo(x_pos, y_pos);
