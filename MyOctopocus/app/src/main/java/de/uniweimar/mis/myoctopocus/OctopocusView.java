@@ -17,14 +17,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class OctopocusView extends View {
-    String TAG = "OctopocusView";
+    String TAG = "OctopocusView, ";
 
     // ######## Feedback Line ########
     private Paint mPaintGesture = new Paint();
     // encapsulates compound geometric path
     private Path mFeedbackPath = new Path();
     private Path mFeedforwardPath = new Path(); // I'm at the moment not sure, when to use this
-    private Path mPrefixPath = new Path();      //  ""
+    // private Path mPrefixPath = new Path();      // This should be the menu path
+    private Path mMenuPath = new Path();      // This should be the menu path
 
     // ######## currentPos of the finger tip ########
     private Point mCurrentPos; // On which position is the finger at the moment
@@ -112,7 +113,7 @@ public class OctopocusView extends View {
                 mCurrentPos = new Point(touchX, touchY);
 
                 // TODO set startPoint for the menu!
-                mFeedbackPath.moveTo(touchX,touchY);
+                // mFeedbackPath.moveTo(touchX,touchY);
 
                 https://stackoverflow.com/questions/4299728/how-can-i-combine-two-hashmap-objects-containing-the-same-types
                 mObjects.putAll(mFeedbackMenu.addMenu(mObjects));
@@ -122,18 +123,18 @@ public class OctopocusView extends View {
 
             case MotionEvent.ACTION_MOVE:
                 Log.v(TAGf, "MotionEvent ACTION_MOVE");
-                mFeedbackPath.lineTo(touchX,touchY);
+               //  mFeedbackPath.lineTo(touchX,touchY);
                 Log.v(TAGf, "lineTo: " + touchX + ", " + touchY);
 
                 mCurrentPos = new Point(touchX, touchY);
 
                 invalidate();
                 break;
+
             case MotionEvent.ACTION_UP:
                 Log.v(TAGf, "MotionEvent ACTION_UP");
                 //Log.v(TAGf, "moveTo: " + touchX + ", " + touchY);
 
-                //
             case MotionEvent.ACTION_CANCEL:
                 Log.v(TAGf, "MotionEvent ACTION_CANCEL");
                 Log.v(TAGf, "moveTo: " + touchX + ", " + touchY);
@@ -149,26 +150,30 @@ public class OctopocusView extends View {
     }
 
 
-
     /*
 i     drawObject does only draw the the Object
+      mPrefixPath = is drawing the path of the menu
+      mFeedbackPath is drawing the cut path (?)
+      mInitPos gibt an, wo der Finger sich befindet, er wird initial gesetzt um das Menü zu setzen.
+      int prefix_end_index is the difference between mInitPos and mCurrentPos
      */
     private void drawObject(Canvas canvas, Object object) {
+        String TAGf = TAG + "drawObject";
+
+        Log.v(TAGf, "was entered");
         mFeedforwardPath = new Path(); // Ist ein Pfad, wo ich noch nicht weiß, was er macht
-        mPrefixPath = new Path();
+        //mPrefixPath = new Path();
+        mMenuPath = new Path();
         mFeedbackPath = new Path();
 
-        // mInitPos ist die initiale Position, die
-        // mInitPos gibt an, wo der Finger sich befindet, er wird initial gesetzt um das Menü zu setzen.
-        //
         mFeedbackPath.moveTo((int) mInitPos.X, (int) mInitPos.Y);
 
-        int prefix_end_index = object.getNearestPointToCursor(mInitPos, mCurrentPos);
+        // I fixed this size
+        int menu_end_index = 50; //object.getNearestPointToCursor(mInitPos, mCurrentPos);
 
         int[] points = object.getPoints();
 
         // This loop is drawing all points
-        // TODO Weiterhin ist eine infiniti loop vorhanden. Ich vermute das liegt daran, da der Event Listener kein ordentliches Ende anzeigt.
         for (int x = 0; x < points.length; x += 2) {
             // This 2 lines are setting the correct position of the finger
             // float x_pos = points[x] * mOBJECTSCALE + (int) mInitPos.X - points[0] * mOBJECTSCALE; // objects points to local space
@@ -177,42 +182,48 @@ i     drawObject does only draw the the Object
             float x_pos = points[x]     + (int) mInitPos.X - points[0]; // objects points to local space
             float y_pos = points[x + 1] + (int) mInitPos.Y - points[1]; // objects points to local space
 
+            Log.v(TAGf, "x_pos: " + x_pos + " y_pos: " + y_pos);
+
            if (x < object.getStartPos()) {
                mFeedbackPath.lineTo(x_pos, y_pos);
-
            } else if (x == object.getStartPos()) {
                mFeedbackPath.lineTo(x_pos, y_pos);
-               mPrefixPath.moveTo(x_pos, y_pos);
+               mMenuPath.moveTo(x_pos, y_pos);
                if (x >= points.length - 10) { // finger tip is near to the end of path
-                   object.setExecute(true) ;
+                   object.setExecute(true);
                    mSelectedObject = object;
                } else {
                    object.setExecute(false);
                }
-
-           } else if (x < prefix_end_index) {
-               mPrefixPath.lineTo(x_pos, y_pos);
-
-           } else if (x == prefix_end_index) {
-               mPrefixPath.lineTo(x_pos, y_pos);
+           } else if (x < menu_end_index) {
+               // mMenuPath is drawing the path of the menu
+               mMenuPath.lineTo(x_pos, y_pos);
+           } else if (x == menu_end_index) {
+               mMenuPath.lineTo(x_pos, y_pos);
                mFeedforwardPath.moveTo(x_pos, y_pos);
-               canvas.drawText(object.getName(), x_pos, y_pos,  object.getTextPaint());
-
+               canvas.drawText(object.getName(), x_pos, y_pos, object.getTextPaint());
            } else {
-               mFeedforwardPath.lineTo(x_pos, y_pos);
+                mFeedforwardPath.lineTo(x_pos, y_pos);
            }
+
+           // mPrefixPath.lineTo(x_pos, y_pos);
+           // mFeedbackPath.lineTo(x_pos, y_pos);
+           //canvas.drawText(object.getName(), x_pos, y_pos,  object.getTextPaint());
         }
 
+        Log.v(TAGf, "for end ended");
         // mFeedbackPaint.setStrokeWidth(object.getThickness());
         // canvas.drawPath(mFeedbackPath, mFeedbackPaint);
 
         // Auskommentiert dies verändert die Größe des Striches
         // mPaintGesture.setStrokeWidth(object.getThickness());
-        // canvas.drawPath(mFeedbackPath, mPaintGesture);
+
 
         if (object.getThickness() != 0) {
             canvas.drawPath(mFeedforwardPath, object.getPathPaint());
-            canvas.drawPath(mPrefixPath, object.getPrefixPaint());
+
+            // canvas.drawPath(mPrefixPath, object.getPrefixPaint());
+            canvas.drawPath(mMenuPath, object.getPrefixPaint());
         }
     }
 }
