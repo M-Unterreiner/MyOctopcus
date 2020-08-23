@@ -174,6 +174,7 @@ public class Dollar implements TouchListener
 	
 	public void clear()
 	{
+		String TAGf = TAG + "cleared Dollar";
 		points.removeAllElements();
 		result.Name = "";
 		result.Score = 0;

@@ -157,6 +157,8 @@ public class OctopocusView extends View {
                     }
                 }
 
+                mDollar.clear();
+
 
             case MotionEvent.ACTION_CANCEL:
                 Log.v(TAGf, "MotionEvent ACTION_CANCEL");
