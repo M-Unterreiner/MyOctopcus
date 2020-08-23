@@ -33,8 +33,10 @@ package de.uniweimar.mis.myoctopocus;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
+import android.util.Log;
 
 public class Object {
+	private String TAG = "Object";
 	private String mName;
 	private int[] mPoints;
 	private int mStartPos = 0;
@@ -44,7 +46,7 @@ public class Object {
 
 
 	private Paint mTextPaint = new Paint();
-	private Paint mPathPaint = new Paint();
+	// private Paint mPathPaint = new Paint();
 	private Paint mPrefixPaint = new Paint();
 
 	private int mPrefixLength = 1200;
@@ -67,10 +69,10 @@ public class Object {
 		this.mTextPaint.setStrokeWidth(4);
 		this.mTextPaint.setTextSize(40);
 
-		this.mPathPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-		this.mPathPaint.setStyle(Paint.Style.STROKE);
-		this.mPathPaint.setColor(Color.parseColor(pathColor));
-		this.mPathPaint.setStrokeWidth(mThickness);
+		// this.mPathPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		// this.mPathPaint.setStyle(Paint.Style.STROKE);
+		// this.mPathPaint.setColor(Color.parseColor(pathColor));
+		// this.mPathPaint.setStrokeWidth(mThickness);
 
 		this.mPrefixPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		this.mPrefixPaint.setStyle(Paint.Style.STROKE);
@@ -104,14 +106,17 @@ public class Object {
 			}
 		}
 
-		int thickness = (int) (threshold / (distance_sum / ((prefix_end_index) - mStartPos + 1)));
-		if (thickness > 1000 || thickness < 4) {
-			thickness = 0;
-			mStartPos = 0;
-		} else if (thickness > mMaxThickness) {
-			thickness = mMaxThickness;
-		}
-		setThickness(thickness);
+		//TODO setThickness is used to decrease the menu when gesture is set
+
+		// int thickness = (int) (threshold / (distance_sum / ((prefix_end_index) - mStartPos + 1)));
+		// if (thickness > 1000 || thickness < 4) {
+		// 	thickness = 1;
+		// 	mStartPos = 1;
+		// } else if (thickness > mMaxThickness) {
+		// 	thickness = mMaxThickness;
+		// }
+		// setThickness(thickness);
+		setThickness(5);
 	}
 
 
@@ -135,29 +140,31 @@ public class Object {
 		return index;
 	}
 
+	//TODO when is this part used?
 	// error between finger and start position
-	public void setError(Point initPos, Point currentPos) {
-		int[] points = mPoints;
-		int i = mStartPos;
+	// public void setError(Point initPos, Point currentPos) {
+	// 	int[] points = mPoints;
+	// 	int i = mStartPos;
 
-		float x_pos = points[i] * mObjectScale + (int) initPos.X - points[0] * mObjectScale; // objects points to global space
-		float y_pos = points[i + 1] * mObjectScale + (int) initPos.Y - points[1] * mObjectScale; // objects points to global space
+	// 	float x_pos = points[i] * mObjectScale + (int) initPos.X - points[0] * mObjectScale; // objects points to global space
+	// 	float y_pos = points[i + 1] * mObjectScale + (int) initPos.Y - points[1] * mObjectScale; // objects points to global space
 
-		double x_err = currentPos.X - x_pos;
-		double y_err = currentPos.Y - y_pos;
+	// 	double x_err = currentPos.X - x_pos;
+	// 	double y_err = currentPos.Y - y_pos;
 
-		double error = Math.sqrt((x_err * x_err) + (y_err * y_err));
+	// 	double error = Math.sqrt((x_err * x_err) + (y_err * y_err));
 
-		if (error > mErrorThreshold) {
-			mStartPos = 0;
-		}
-	}
+	// 	if (error > mErrorThreshold) {
+	// 		mStartPos = 0;
+	// 	}
+	// }
 
 
 
 	public void setThickness(int thickness) {
+		Log.v(TAG, "setThickness: " + thickness);
 		this.mThickness = thickness;
-		this.mPathPaint.setStrokeWidth(thickness);
+		// this.mPathPaint.setStrokeWidth(thickness);
 		this.mPrefixPaint.setStrokeWidth(thickness);
 	}
 
@@ -199,9 +206,9 @@ public class Object {
 		return mThickness;
 	}
 
-	public Paint getPathPaint() {
-		return mPathPaint;
-	}
+	// public Paint getPathPaint() {
+	//	return mPathPaint;
+	// }
 
 	public Paint getPrefixPaint() {
 		return mPrefixPaint;
