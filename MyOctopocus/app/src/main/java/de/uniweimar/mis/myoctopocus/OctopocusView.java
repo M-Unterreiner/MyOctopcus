@@ -31,7 +31,7 @@ public class OctopocusView extends View {
     private Path mMenuPath = new Path();      // This should be the menu path
 
     // ######## currentPos of the finger tip ########
-    private Point mCurrentPos; // On which position is the finger at the moment
+    private Point mCurrentPos = new Point(0,0); // On which position is the finger at the moment
     private Point mInitPos;    // Init position of the first finger tip
 
     // Was genau macht dieses Object?
@@ -93,6 +93,9 @@ public class OctopocusView extends View {
 
         Log.v(TAGf, "was entered");
         canvas.drawPath(mFeedbackPath, mPaintGesture);
+
+        mDollar.addPoint((int) mCurrentPos.X, (int) mCurrentPos.Y);
+
         for (String object : mObjects.keySet()) {
             mObjects.get(object).setStartPosition(mInitPos, mCurrentPos); // current start position in object
 
@@ -143,6 +146,17 @@ public class OctopocusView extends View {
             case MotionEvent.ACTION_UP:
                 Log.v(TAGf, "MotionEvent ACTION_UP");
                 //Log.v(TAGf, "moveTo: " + touchX + ", " + touchY);
+                mDollar.recognize();
+
+                ((MainActivity) this.getContext()).writeDollar(mDollar);
+                String execute_name = mDollar.result.Name;
+                for (String objectName : mObjects.keySet()) {
+                    Object object = mObjects.get(objectName);
+                    if (object.getName().equals(execute_name)) {
+                        object.setExecute(true);
+                    }
+                }
+
 
             case MotionEvent.ACTION_CANCEL:
                 Log.v(TAGf, "MotionEvent ACTION_CANCEL");

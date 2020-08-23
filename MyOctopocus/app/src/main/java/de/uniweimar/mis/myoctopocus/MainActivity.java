@@ -10,9 +10,9 @@ import android.view.MenuItem;
 import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity {
+    String TAG = "MainActivity ";
 
     private EditText editText;
-
     private ClipboardManager clipboardManager;
     private ClipData clip;
 
@@ -26,9 +26,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
+    // set the object text with dollar and the resulting name
+    public void writeDollar(Dollar dollar){   // --> not used anymore
+        String TAGf = "writeDollar";
+        Log.v(TAGf, " entered");
+
+        // objectText.setText("Object: " + dollar.result.Name + " Score: " + dollar.result.Score);
+        Log.v(TAGf, "Object: " + dollar.result.Name + " Score: " + dollar.result.Score);
+    }
+
     public void executeCommand(String name) {
-        String TAG = "executeCommand";
-        Log.v(TAG, "executionCommand entered");
+        String TAGf = "executeCommand";
+        Log.v(TAGf, "executionCommand entered");
 
         String text = editText.getText().toString();
 

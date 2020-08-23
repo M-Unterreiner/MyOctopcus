@@ -30,18 +30,16 @@
 
 package de.uniweimar.mis.myoctopocus;
 
-//import io.hybrid.interaction.touch.TouchListener;
 
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.Vector;
 
-//import javax.microedition.lcdui.Graphics; //Java ME -> render
-//import java.awt.Graphics; //Java SE -> render
-
-
 public class Dollar implements TouchListener
 {
+	String TAG = "Dollar";
+
 	protected int x, y;
 	protected int state;
 	protected int _key = -1;
@@ -72,25 +70,6 @@ public class Dollar implements TouchListener
 		this.listener = listener;
 	}
 
-	/*
-	public void render(Graphics g) 
-	{
-		if (!active)
-			return;
-		
-		Point p1, p2;
-				
-//		g.setColor(0x999999);
-		
-		for (int i = 0; i < points.size()-1; i++)
-		{
-			p1 = (Point)points.elementAt(i);
-			p2 = (Point)points.elementAt(i+1);
-			g.drawLine((int)p1.X, (int)p1.Y, (int)p2.X, (int)p2.Y);
-		}		
-	}
-	*/
-	
 	public Vector getPoints()
 	{
 		return points;
@@ -104,23 +83,34 @@ public class Dollar implements TouchListener
 		
 		points.addElement(new Point(x, y));
 //		System.out.println(x + " " + y + " " + points.size());
-	}	
+	}
 	
 	public void recognize()
 	{
+		String TAGf = TAG + " recognize ";
+		Log.v(TAGf, "entered");
 
-		if (!active)
+		if (!active){
+			Log.v(TAGf, "Is not active");
 			return;
+		}
 
 		if (points.size() == 0) //the recognizer will crash if we try to process an empty set of points...
+		{
+			Log.v(TAGf, "Point size = 0");
 			return;
+		}
 		
 		result = recognizer.Recognize(points);
+		Log.v(TAGf, "regognized something: " + result);
+
 //        System.out.println("Result " + result.Name);
 //		points.removeAllElements();
 		
-		if (listener != null)
+		if (listener != null) {
 			listener.dollarDetected(this);
+			Log.v(TAGf, "is not null, Dollar should detect something");
+		}
 	}
 
 	public void setNewPoints(String name, int[] newPoints) {
