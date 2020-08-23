@@ -27,7 +27,7 @@ public class OctopocusView extends View {
     private Path mPrefixPath = new Path();      //  ""
 
     // ######## currentPos of the finger tip ########
-    private Point mCurrentPos; // On which position is the finger at the momenent
+    private Point mCurrentPos; // On which position is the finger at the moment
     private Point mInitPos;    // Init position of the first finger tip
 
     // Was genau macht dieses Object?
@@ -36,12 +36,13 @@ public class OctopocusView extends View {
     // int mOBJECTSCALE = 1;     // ObjectScale should be dependent on the screen size
     // int mMAXTHICKNESS = 10;   // ObjectScale should be dependent on the screen size
 
-    // in mObjects are the Objects stored, which are drawn in the draw-methods
+    // In mObjects are the Objects stored, which are drawn in the draw-methods
     Map<String, Object> mObjects = new HashMap<>();
     // TemplateData mObjectData = new TemplateData(); // commented out, these are at the moment in the Menu class
 
     // ####### Menu ########
-    Menu mFeedbackMenu = new Menu();
+    //Menu mFeedbackMenu = new Menu();
+    Menu mFeedbackMenu = new Menu(this.getWidth(),this.getHeight());
 
 
 
@@ -166,15 +167,15 @@ i     drawObject does only draw the the Object
 
         int[] points = object.getPoints();
 
-        // Was macht diese For-Schleife?
-        // Diese For-Schleife mal das Menü auf
+        // This loop is drawing all points
         // TODO Weiterhin ist eine infiniti loop vorhanden. Ich vermute das liegt daran, da der Event Listener kein ordentliches Ende anzeigt.
         for (int x = 0; x < points.length; x += 2) {
+            // This 2 lines are setting the correct position of the finger
             // float x_pos = points[x] * mOBJECTSCALE + (int) mInitPos.X - points[0] * mOBJECTSCALE; // objects points to local space
             // float y_pos = points[x + 1] * mOBJECTSCALE + (int) mInitPos.Y - points[1] * mOBJECTSCALE; // objects points to local space
 
-            float x_pos = points[x]; // objects points to local space
-            float y_pos = points[x + 1]; // objects points to local space
+            float x_pos = points[x]     + (int) mInitPos.X - points[0]; // objects points to local space
+            float y_pos = points[x + 1] + (int) mInitPos.Y - points[1]; // objects points to local space
 
            if (x < object.getStartPos()) {
                mFeedbackPath.lineTo(x_pos, y_pos);
