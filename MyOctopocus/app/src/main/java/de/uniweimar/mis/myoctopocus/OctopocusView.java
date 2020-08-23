@@ -13,7 +13,9 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class OctopocusView extends View {
@@ -34,6 +36,8 @@ public class OctopocusView extends View {
 
     // Was genau macht dieses Object?
     private Object mSelectedObject = null; // Not sure
+    // TODO Wird wohl  nicht gebraucht
+    //Object object = new Object();
 
     // int mOBJECTSCALE = 1;     // ObjectScale should be dependent on the screen size
     // int mMAXTHICKNESS = 10;   // ObjectScale should be dependent on the screen size
@@ -46,6 +50,12 @@ public class OctopocusView extends View {
     //Menu mFeedbackMenu = new Menu();
     Menu mFeedbackMenu = new Menu(this.getWidth(),this.getHeight());
 
+
+    // ####### Dollar ########
+    private List<Double> newPath = new ArrayList<>();
+    private String mNewObjectName = "";
+
+    private Dollar mDollar = new Dollar(1);
 
 
     public OctopocusView(Context context) {
@@ -228,4 +238,51 @@ i     drawObject moves and draws the objects.
             canvas.drawPath(mMenuPath, object.getPrefixPaint());
         }
     }
+
+private void clear() {
+        String TAG = "MyView: clear";
+        Log.v(TAG, "entered");
+
+
+        // if (mSaveNewPath && mNoviceMode) {
+        //     setNewPath();
+
+        // } else {
+            for (String objectName : mObjects.keySet()) {
+                Object object = mObjects.get(objectName);
+                if (object.getExcecute()) { // excecute function of command
+                    ((MainActivity) this.getContext()).executeCommand(object.getName());
+                    if (object.getName().length() < 10) {
+                        // TODO Variable auskommentiert
+                        //mSaveNewPath = false;
+                    } else {
+                        String substring = object.getName().substring(0, 10);
+                        if (substring.equals("New Path: ")) {
+
+                            // mSaveNewPath = true;
+                            // mNewObjectName = object.getName().substring(10, object.getName().length());
+                            break;
+                        } else {
+                            // TODO Variable auskommentiert
+                            // mSaveNewPath = false;
+                        }
+                    }
+                    mSelectedObject = object;
+                    invalidate();
+                }
+            }
+        //}
+
+
+        mDollar.clear();
+
+        // mTouchUp = true;
+        newPath = new ArrayList<>();
+
+        for (String object : mObjects.keySet()) {
+            mObjects.get(object).clear();
+        }
+    }
+
+
 }
