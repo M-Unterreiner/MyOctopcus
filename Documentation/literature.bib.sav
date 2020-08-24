@@ -1,0 +1,26 @@
+% Encoding: UTF-8
+
+@InProceedings{Bau2008,
+  author    = {Olivier Bau and Wendy E. Mackay},
+  booktitle = {Proceedings of the 21st annual {ACM} symposium on User interface software and technology - {UIST} {\textquotesingle}08},
+  title     = {{OctoPocus}},
+  year      = {2008},
+  publisher = {{ACM} Press},
+  doi       = {10.1145/1449715.1449724},
+}
+
+@Article{Rubine1991,
+  author    = {Dean Rubine},
+  journal   = {{ACM} {SIGGRAPH} Computer Graphics},
+  title     = {Specifying gestures by example},
+  year      = {1991},
+  month     = {jul},
+  number    = {4},
+  pages     = {329--337},
+  volume    = {25},
+  doi       = {10.1145/127719.122753},
+  file      = {:Rubine1991 - Specifying Gestures by Example.PDF:PDF},
+  publisher = {Association for Computing Machinery ({ACM})},
+}
+
+@Comment{jabref-meta: databaseType:bibtex;}

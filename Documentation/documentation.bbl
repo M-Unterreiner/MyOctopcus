@@ -1,0 +1,91 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.0 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{nty/global//global/global}
+    \entry{Bau2008}{inproceedings}{}
+      \name{author}{2}{}{%
+        {{hash=351236e64198d96c9bbee359740732ee}{%
+           family={Bau},
+           familyi={B\bibinitperiod},
+           given={Olivier},
+           giveni={O\bibinitperiod}}}%
+        {{hash=2d0cc7c7deb5aa48acdd152ca1a3ebc3}{%
+           family={Mackay},
+           familyi={M\bibinitperiod},
+           given={Wendy\bibnamedelima E.},
+           giveni={W\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {{ACM} Press}%
+      }
+      \strng{namehash}{2dec89a667afdf3e543fe23e1e949db3}
+      \strng{fullhash}{2dec89a667afdf3e543fe23e1e949db3}
+      \strng{bibnamehash}{2dec89a667afdf3e543fe23e1e949db3}
+      \strng{authorbibnamehash}{2dec89a667afdf3e543fe23e1e949db3}
+      \strng{authornamehash}{2dec89a667afdf3e543fe23e1e949db3}
+      \strng{authorfullhash}{2dec89a667afdf3e543fe23e1e949db3}
+      \field{sortinit}{B}
+      \field{sortinithash}{276475738cc058478c1677046f857703}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of the 21st annual {ACM} symposium on User interface software and technology - {UIST} {'}08}
+      \field{title}{{OctoPocus}}
+      \field{year}{2008}
+      \verb{doi}
+      \verb 10.1145/1449715.1449724
+      \endverb
+    \endentry
+    \entry{Rubine1991}{article}{}
+      \name{author}{1}{}{%
+        {{hash=df2eb0c25fb52838fa439d4541f5dcf3}{%
+           family={Rubine},
+           familyi={R\bibinitperiod},
+           given={Dean},
+           giveni={D\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Association for Computing Machinery ({ACM})}%
+      }
+      \strng{namehash}{df2eb0c25fb52838fa439d4541f5dcf3}
+      \strng{fullhash}{df2eb0c25fb52838fa439d4541f5dcf3}
+      \strng{bibnamehash}{df2eb0c25fb52838fa439d4541f5dcf3}
+      \strng{authorbibnamehash}{df2eb0c25fb52838fa439d4541f5dcf3}
+      \strng{authornamehash}{df2eb0c25fb52838fa439d4541f5dcf3}
+      \strng{authorfullhash}{df2eb0c25fb52838fa439d4541f5dcf3}
+      \field{sortinit}{R}
+      \field{sortinithash}{da6b42bd3ab22fee61abed031ee405f7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{{ACM} {SIGGRAPH} Computer Graphics}
+      \field{month}{7}
+      \field{number}{4}
+      \field{title}{Specifying gestures by example}
+      \field{volume}{25}
+      \field{year}{1991}
+      \field{pages}{329\bibrangedash 337}
+      \range{pages}{9}
+      \verb{doi}
+      \verb 10.1145/127719.122753
+      \endverb
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+

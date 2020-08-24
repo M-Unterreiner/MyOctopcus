@@ -1,0 +1,12 @@
+% Encoding: UTF-8
+
+@InProceedings{Bau2008,
+  author    = {Olivier Bau and Wendy E. Mackay},
+  booktitle = {Proceedings of the 21st annual {ACM} symposium on User interface software and technology - {UIST} {\textquotesingle}08},
+  title     = {{OctoPocus}},
+  year      = {2008},
+  publisher = {{ACM} Press},
+  doi       = {10.1145/1449715.1449724},
+}
+
+@Comment{jabref-meta: databaseType:bibtex;}
