@@ -7,8 +7,18 @@
     tools:context=".MainActivity">
 
     <de.uniweimar.mis.myoctopocus.OctopocusView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+        android:id="@+id/octopocusView"
+        android:layout_width="411dp"
+        android:layout_height="637dp"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <TextView
+        android:id="@+id/resultoutput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Example Text"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="649dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

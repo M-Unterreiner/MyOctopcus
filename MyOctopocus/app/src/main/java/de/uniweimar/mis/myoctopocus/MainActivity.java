@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
     String TAG = "MainActivity ";
@@ -18,12 +19,15 @@ public class MainActivity extends AppCompatActivity {
 
     private MenuItem pasteItem;
 
-
+    TextView resultText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        resultText = (TextView)findViewById(R.id.resultoutput);
+        resultText.setText("MyOctopocus is ready, please tip with your finger on the screen");
     }
 
     // set the object text with dollar and the resulting name
@@ -31,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         String TAGf = "writeDollar";
         Log.v(TAGf, " entered");
 
-        // objectText.setText("Object: " + dollar.result.Name + " Score: " + dollar.result.Score);
+        resultText.setText("Object: " + dollar.result.Name + " Score: " + dollar.result.Score);
         Log.v(TAGf, "Object: " + dollar.result.Name + " Score: " + dollar.result.Score);
     }
 

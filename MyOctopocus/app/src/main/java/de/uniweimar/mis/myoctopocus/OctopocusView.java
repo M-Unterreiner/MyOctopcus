@@ -33,18 +33,14 @@ public class OctopocusView extends View {
     // ######## currentPos of the finger tip ########
     private Point mCurrentPos = new Point(0,0); // On which position is the finger at the moment
     private Point mInitPos;    // Init position of the first finger tip
-
-    // Was genau macht dieses Object?
     private Object mSelectedObject = null; // Not sure
 
     // In mObjects are the Objects stored, which are drawn in the draw-methods
     Map<String, Object> mObjects = new HashMap<>();
-    // TemplateData mObjectData = new TemplateData(); // commented out, these are at the moment in the Menu class
 
     // ####### Menu ########
     //Menu mFeedbackMenu = new Menu();
     Menu mFeedbackMenu = new Menu(this.getWidth(),this.getHeight());
-
 
     // ####### Dollar ########
     private List<Double> newPath = new ArrayList<>();
@@ -118,7 +114,7 @@ public class OctopocusView extends View {
                 mInitPos = new Point (touchX, touchY);
                 mCurrentPos = new Point(touchX, touchY);
 
-                https://stackoverflow.com/questions/4299728/how-can-i-combine-two-hashmap-objects-containing-the-same-types
+                // https://stackoverflow.com/questions/4299728/how-can-i-combine-two-hashmap-objects-containing-the-same-types
                 mObjects.putAll(mFeedbackMenu.addMenu(mObjects));
 
                 invalidate();
@@ -162,7 +158,6 @@ public class OctopocusView extends View {
 
         // return true is important to clarify that the event was handled successfully
         return true;
-        //return super.onTouchEvent(event);
     }
 
 
@@ -191,9 +186,6 @@ i     drawObject moves and draws the objects.
 
         // This loop is drawing all points
         for (int x = 0; x < points.length; x += 2) {
-            // This 2 lines are setting the correct position of the finger
-            // float x_pos = points[x] * mOBJECTSCALE + (int) mInitPos.X - points[0] * mOBJECTSCALE; // objects points to local space
-            // float y_pos = points[x + 1] * mOBJECTSCALE + (int) mInitPos.Y - points[1] * mOBJECTSCALE; // objects points to local space
 
             float x_pos = points[x]     + (int) mInitPos.X - points[0]; // objects points to local space
             float y_pos = points[x + 1] + (int) mInitPos.Y - points[1]; // objects points to local space
@@ -217,10 +209,7 @@ i     drawObject moves and draws the objects.
                }
 
            } else if (x < menu_end_index) {
-               // When User didn't touch the screen, it is here
                // Log.v(TAGf, "else if = x < menu_end_index");
-
-               // mMenuPath is drawing the path of the menu
                mMenuPath.lineTo(x_pos, y_pos);
            } else if (x == menu_end_index) {
                Log.v(TAGf, "else if == x == menu_end_index");
@@ -239,9 +228,6 @@ i     drawObject moves and draws the objects.
         canvas.drawPath(mFeedbackPath, mPaintGesture);
 
         if (object.getThickness() != 0) {
-            // canvas.drawPath(mFeedforwardPath, object.getPathPaint());
-
-           //  canvas.drawPath(mPrefixPath, object.getPrefixPaint());
             canvas.drawPath(mMenuPath, object.getPrefixPaint());
         }
     }
@@ -250,36 +236,28 @@ private void clear() {
         String TAG = "MyView: clear";
         Log.v(TAG, "entered");
 
+        for (String objectName : mObjects.keySet()) {
+            Object object = mObjects.get(objectName);
+            if (object.getExcecute()) { // excecute function of command
+                ((MainActivity) this.getContext()).executeCommand(object.getName());
+                if (object.getName().length() < 10) {
+                } else {
+                    String substring = object.getName().substring(0, 10);
+                    if (substring.equals("New Path: ")) {
 
-        // if (mSaveNewPath && mNoviceMode) {
-        //     setNewPath();
-
-        // } else {
-            for (String objectName : mObjects.keySet()) {
-                Object object = mObjects.get(objectName);
-                if (object.getExcecute()) { // excecute function of command
-                    ((MainActivity) this.getContext()).executeCommand(object.getName());
-                    if (object.getName().length() < 10) {
+                        // mSaveNewPath = true;
+                        // mNewObjectName = object.getName().substring(10, object.getName().length());
+                        break;
                     } else {
-                        String substring = object.getName().substring(0, 10);
-                        if (substring.equals("New Path: ")) {
-
-                            // mSaveNewPath = true;
-                            // mNewObjectName = object.getName().substring(10, object.getName().length());
-                            break;
-                        } else {
-                        }
                     }
-                    mSelectedObject = object;
-                    invalidate();
                 }
+                mSelectedObject = object;
+                invalidate();
             }
-        //}
-
+        }
 
         mDollar.clear();
 
-        // mTouchUp = true;
         newPath = new ArrayList<>();
 
         for (String object : mObjects.keySet()) {
