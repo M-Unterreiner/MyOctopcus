@@ -36,11 +36,6 @@ public class OctopocusView extends View {
 
     // Was genau macht dieses Object?
     private Object mSelectedObject = null; // Not sure
-    // TODO Wird wohl  nicht gebraucht
-    //Object object = new Object();
-
-    // int mOBJECTSCALE = 1;     // ObjectScale should be dependent on the screen size
-    // int mMAXTHICKNESS = 10;   // ObjectScale should be dependent on the screen size
 
     // In mObjects are the Objects stored, which are drawn in the draw-methods
     Map<String, Object> mObjects = new HashMap<>();
@@ -116,16 +111,12 @@ public class OctopocusView extends View {
         float touchX = event.getX();
         float touchY = event.getY();
 
-        // TODO Hier könnnte der Grund der unendlichkeits-Schleife liegen
         switch(event.getAction()){
             case MotionEvent.ACTION_DOWN:
                 Log.v(TAGf, "MotionEvent ACTION_DOWN");
                 Log.v(TAGf, "moveTo: " + touchX + ", " + touchY);
                 mInitPos = new Point (touchX, touchY);
                 mCurrentPos = new Point(touchX, touchY);
-
-                // TODO set startPoint for the menu!
-                // mFeedbackPath.moveTo(touchX,touchY);
 
                 https://stackoverflow.com/questions/4299728/how-can-i-combine-two-hashmap-objects-containing-the-same-types
                 mObjects.putAll(mFeedbackMenu.addMenu(mObjects));
@@ -269,8 +260,6 @@ private void clear() {
                 if (object.getExcecute()) { // excecute function of command
                     ((MainActivity) this.getContext()).executeCommand(object.getName());
                     if (object.getName().length() < 10) {
-                        // TODO Variable auskommentiert
-                        //mSaveNewPath = false;
                     } else {
                         String substring = object.getName().substring(0, 10);
                         if (substring.equals("New Path: ")) {
@@ -279,8 +268,6 @@ private void clear() {
                             // mNewObjectName = object.getName().substring(10, object.getName().length());
                             break;
                         } else {
-                            // TODO Variable auskommentiert
-                            // mSaveNewPath = false;
                         }
                     }
                     mSelectedObject = object;

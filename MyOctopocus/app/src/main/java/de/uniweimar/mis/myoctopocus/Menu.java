@@ -25,7 +25,6 @@ public class Menu {
 
     /*
      Set the fixed scale of the menu
-     TODO: Check if thickness is to small!
       */
     public void setScale(int newScaleOfMenu, int newMaxMenuThickness) {
         String TAGf = TAG + "setScale";
