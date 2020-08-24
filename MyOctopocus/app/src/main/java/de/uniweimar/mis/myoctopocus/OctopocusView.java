@@ -139,9 +139,6 @@ public class OctopocusView extends View {
                 String execute_name = mDollar.result.Name;
                 for (String objectName : mObjects.keySet()) {
                     Object object = mObjects.get(objectName);
-                    if (object.getName().equals(execute_name)) {
-                        object.setExecute(true);
-                    }
                 }
 
                 mDollar.clear();
@@ -235,26 +232,6 @@ i     drawObject moves and draws the objects.
 private void clear() {
         String TAG = "MyView: clear";
         Log.v(TAG, "entered");
-
-        for (String objectName : mObjects.keySet()) {
-            Object object = mObjects.get(objectName);
-            if (object.getExcecute()) { // excecute function of command
-                ((MainActivity) this.getContext()).executeCommand(object.getName());
-                if (object.getName().length() < 10) {
-                } else {
-                    String substring = object.getName().substring(0, 10);
-                    if (substring.equals("New Path: ")) {
-
-                        // mSaveNewPath = true;
-                        // mNewObjectName = object.getName().substring(10, object.getName().length());
-                        break;
-                    } else {
-                    }
-                }
-                mSelectedObject = object;
-                invalidate();
-            }
-        }
 
         mDollar.clear();
 
